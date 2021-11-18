@@ -1,9 +1,14 @@
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog"
+)
 
 type App struct {
 	*gin.Engine
+	Address string
+	Logger  zerolog.Logger
 }
 
 func (app *App) Use(middleware ...HandlerFunc) {
@@ -15,17 +20,21 @@ func (app *App) Group(path string, middlewares ...HandlerFunc) *Group {
 	return createGroup(group)
 }
 
+func (app *App) Start() error {
+	app.Logger.Info().Msgf("http server will start at %s", app.Address)
+	return app.Run(app.Address)
+}
+
 func init() {
 	gin.SetMode(gin.ReleaseMode)
 }
 
-func Create() *App {
-	app := gin.New()
-	return &App{app}
-}
-
-func CreateApp() *App {
-	app := Create()
+func CreateApp(logger zerolog.Logger, address string) *App {
+	app := &App{
+		Engine:  gin.New(),
+		Logger:  logger,
+		Address: address,
+	}
 	app.Engine.Use(gin.Recovery())
 	return app
 }
