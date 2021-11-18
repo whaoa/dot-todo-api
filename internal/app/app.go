@@ -41,7 +41,10 @@ func createCore(options Options) *Core {
 }
 
 func startHttpServer(core *Core) {
-	core.HttpServer.Use(middlewares.Logger(core.HttpLogger))
+	core.HttpServer.Use(
+		middlewares.RequestId(middlewares.DefaultRequestIDConfig),
+		middlewares.Logger(core.HttpLogger),
+	)
 
 	core.HttpLogger.Fatal().
 		Err(core.HttpServer.Start()).
