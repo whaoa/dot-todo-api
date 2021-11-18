@@ -7,9 +7,10 @@ import (
 )
 
 type Options struct {
-	Level      string
-	TimeFormat string
-	Writer     io.Writer
+	Level               string
+	TimeFormat          string
+	Writer              io.Writer
+	ErrorStackMarshaler ErrorStackMarshaler
 }
 
 func Create(options Options) zerolog.Logger {
@@ -27,6 +28,11 @@ func Create(options Options) zerolog.Logger {
 		level = zerolog.InfoLevel
 	}
 	zerolog.SetGlobalLevel(level)
+
+	if options.ErrorStackMarshaler == nil {
+		options.ErrorStackMarshaler = createErrorStackMarshaler(level == zerolog.DebugLevel)
+	}
+	zerolog.ErrorStackMarshaler = options.ErrorStackMarshaler
 
 	format := options.TimeFormat
 	if format == "" {
