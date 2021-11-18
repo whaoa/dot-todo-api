@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/whaoa/dot-todo-api/package/config"
-	"github.com/whaoa/dot-todo-api/package/logger"
+	"github.com/whaoa/dot-todo-api/internal/app"
+	"github.com/whaoa/dot-todo-api/packages/config"
+	"github.com/whaoa/dot-todo-api/packages/logger"
 	"os"
 )
 
@@ -12,5 +13,5 @@ func main() {
 		Level:  conf.Logger.Level,
 		Writer: os.Stdout,
 	})
-	log.Debug().Interface("config", conf).Msg("")
+	app.Boot(app.Options{Config: conf, Logger: log})
 }
