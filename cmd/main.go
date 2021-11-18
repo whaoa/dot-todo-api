@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/whaoa/dot-todo-api/package/server"
+	"fmt"
+	"github.com/whaoa/dot-todo-api/package/config"
 )
 
 func main() {
-	server.CreateApp()
+	fmt.Println(config.Get())
 }

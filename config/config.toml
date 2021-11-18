@@ -1,0 +1,10 @@
+[app]
+name = "dot-todo-api"
+mode = "debug"
+version = "0.0.1"
+
+[logger]
+level = "debug"
+
+[http]
+address = ":2000"
