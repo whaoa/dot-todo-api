@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/whaoa/dot-todo-api/package/server"
+)
 
 func main() {
-	fmt.Println("dot-todo-api")
+	server.CreateApp()
 }
