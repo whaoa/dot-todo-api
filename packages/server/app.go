@@ -29,12 +29,10 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 }
 
-func CreateApp(logger zerolog.Logger, address string) *App {
-	app := &App{
+func Create(logger zerolog.Logger, address string) *App {
+	return &App{
 		Engine:  gin.New(),
 		Logger:  logger,
 		Address: address,
 	}
-	app.Engine.Use(gin.Recovery())
-	return app
 }

@@ -30,7 +30,7 @@ func Boot(options Options) {
 func createCore(options Options) *Core {
 	appLogger := options.Logger.With().Bool("app", true).Logger()
 	httpLogger := options.Logger.With().Bool("http", true).Logger()
-	httpServer := server.CreateApp(httpLogger, options.Config.HTTP.Address)
+	httpServer := server.Create(httpLogger, options.Config.HTTP.Address)
 	return &Core{
 		Config:     options.Config,
 		BaseLogger: options.Logger,
@@ -42,6 +42,7 @@ func createCore(options Options) *Core {
 
 func startHttpServer(core *Core) {
 	core.HttpServer.Use(
+		middlewares.Recovery(middlewares.RecoveryConfig{Logger: core.HttpLogger}),
 		middlewares.RequestId(middlewares.DefaultRequestIDConfig),
 		middlewares.Logger(core.HttpLogger),
 	)
